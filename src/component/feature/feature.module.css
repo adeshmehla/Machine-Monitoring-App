@@ -1,0 +1,41 @@
+.container {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: auto;
+  margin-top: 12%;
+  padding: 30px 10px;
+  width: 350px;
+  height: auto;
+  box-shadow: 3px 3px 11px lightgray;
+}
+.container h2 {
+  text-align: center;
+}
+
+.form_container {
+  margin: auto;
+  width: 70%;
+}
+.form_container input {
+  height: 35px;
+}
+
+.feature_btn {
+  background-color: rgb(49, 216, 77);
+  width: 210px;
+  border-radius: 10px;
+}
+
+.forgot_pass_btn {
+  width: 150px;
+}
+
+.feature_footer_link {
+  display: flex;
+  justify-content: space-between;
+}
+
+.link_class {
+  color: #1677ff;
+  text-decoration: none;
+  font-size: 12px;
+}
