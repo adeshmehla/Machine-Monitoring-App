@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Radio, Modal } from "antd";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import login_img from '../img/images.jpg'
 import styles from "./feature.module.css";
 import { ForgotPassword } from "./forgot_password";
-
+import {degination} from '../redux/pageSlice'
+import {useDispatch} from 'react-redux';
 export const Login = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate('');
   // const [employee_name, setEmployee_name] = useState("");
 
   useEffect(() => {
@@ -48,13 +52,19 @@ export const Login = () => {
 
   const onFinish = (values) => {
     console.log(values, "login Data++++++++++++");
+    if(values){
+dispatch(degination(values.user.designation))
+      navigate('/qrcode')
+    }
   };
 
   return (
     <>
+        <div className={styles.main_container}>
       <div className={styles.container}>
-        <h2>Login</h2>
 
+        
+        <h2>Login</h2>
         <Form
           form={form}
           className={styles.form_container}
@@ -65,11 +75,11 @@ export const Login = () => {
             maxWidth: 600
           }}
           // validateMessages={validateMessages}
-        >
+          >
           <Form.Item name={["user", "designation"]} label="Your Designation">
             <Radio.Group>
               <Radio.Button value="Supervisor">Supervisor</Radio.Button>
-              <Radio.Button value="Machanic">Machanic</Radio.Button>
+              <Radio.Button value="Machanic">Mechanic</Radio.Button>
             </Radio.Group>
           </Form.Item>
           <Form.Item name={["user", "card_number"]} label="Card Number">
@@ -81,13 +91,14 @@ export const Login = () => {
           <Form.Item
             name={["user", "password"]}
             label="Your Password"
+           
             rules={[
               {
                 required: true
               }
             ]}
-          >
-            <Input />
+            >
+            <Input  type="password" />
           </Form.Item>
           <Form.Item
             wrapperCol={{
@@ -98,7 +109,7 @@ export const Login = () => {
               className={styles.feature_btn}
               type="primary"
               htmlType="submit"
-            >
+              >
               Sign in
             </Button>
           </Form.Item>
@@ -118,15 +129,17 @@ export const Login = () => {
 
         <Modal
           width={320}
+          // visible={isModalOpen}
           title="Reset Password Using Email"
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
           footer={null}
-        >
+          >
           <ForgotPassword />
         </Modal>
-      </div>
+        </div>
+            </div>
     </>
   );
 };
