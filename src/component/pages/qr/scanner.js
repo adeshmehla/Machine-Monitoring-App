@@ -28,7 +28,7 @@ export const Scanner = (props) => {
       const qrCodeSuccessCallback = (decodedText, decodedResult) => {
         console.info(decodedResult, decodedText);
         props.onResult(decodedText);
-        // alert(`decoded:__ ${decodedText} ${decodedResult}`);
+        alert(`decoded:__ ${decodedText} ${decodedResult}`);
         ////////////////////////////////////////////////////
         fileRef.current.click();
      
