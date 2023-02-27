@@ -1,16 +1,16 @@
 import "./styles.css";
 
-import { DetailsPage } from "./component/pages/detailsPage";
+// import { DetailsPage } from "./component/pages/detailsPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Login } from "./component/feature/login";
 import { Signup } from "./component/feature/signup";
 import Profile from "./component/pages/profile";
 import { ForgotPassword } from "./component/feature/forgot_password";
 import { NotificationConfirmation } from "./component/pages/notificationConfirmation";
-import { QrCode } from "./component/qr_code";
+import { QrCode } from "./component/pages/qr/qr_code";
 
-import {MechanicForm } from "./component/pages/mechanicForm";
-import { SupervisorForm } from "./component/pages/supervisorForm";
+import {MechanicForm } from "./component/pages/form/mechanicForm";
+import { SupervisorForm } from "./component/pages/form/supervisorForm";
 export default function App() {
    
   return (

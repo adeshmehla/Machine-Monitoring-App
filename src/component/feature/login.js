@@ -53,6 +53,7 @@ export const Login = () => {
   const onFinish = (values) => {
     console.log(values, "login Data++++++++++++");
     if(values){
+      localStorage.setItem('loginData',values)
 dispatch(degination(values.user.designation))
       navigate('/qrcode')
     }
