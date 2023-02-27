@@ -28,11 +28,11 @@ export const Scanner = (props) => {
       const qrCodeSuccessCallback = (decodedText, decodedResult) => {
         console.info(decodedResult, decodedText);
         props.onResult(decodedText);
-        // alert(`decoded:__ ${decodedText} ${decodedResult}`);
+        alert(`decoded:__ ${decodedText} ${decodedResult}`);
         ////////////////////////////////////////////////////
         fileRef.current.click();
-        const b = JSON.stringify(decodedResult);
-        alert(b);
+        // const b = JSON.stringify(decodedResult);
+        // alert(b);
      
       // const jag = ['1','2','3'];
       // const amit = ['4','5','6'];
