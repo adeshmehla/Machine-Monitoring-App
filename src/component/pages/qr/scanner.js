@@ -28,7 +28,7 @@ export const Scanner = (props) => {
       const qrCodeSuccessCallback = (decodedText, decodedResult) => {
         console.info(decodedResult, decodedText);
         props.onResult(decodedText);
-        alert(`decoded:__ ${decodedText} ${JSON.stringify(decodedResult)}`);
+        // alert(`decoded:__ ${JSON.stringify(decodedText)} ${JSON.stringify(decodedResult)}`);
         ////////////////////////////////////////////////////
         fileRef.current.click();
         // const b = JSON.stringify(decodedResult);
@@ -51,7 +51,7 @@ export const Scanner = (props) => {
           // const file = e.target.files[0];
           // setfile(file);
           // const result = await QrScanner.scanImage(file);
-          if(decodedText){
+          // if(decodedText){
             const b = decodedText.split(" ")[0]
             if(file){
                
@@ -111,7 +111,7 @@ export const Scanner = (props) => {
                 navigate('/supervisor')
             }
   
-          }
+          // }
         };
         handleStop();
       html5QrCode
