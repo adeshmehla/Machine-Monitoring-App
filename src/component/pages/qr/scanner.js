@@ -55,6 +55,7 @@ export const Scanner = (props) => {
               const b = decodedText
               
               console.log(b.machine_type,'bbbbbbb')
+              alert(b);
               // if(file){
                  
               //     localStorage.setItem('qr_scannerData',JSON.parse(b))
