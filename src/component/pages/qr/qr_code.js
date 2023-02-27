@@ -135,7 +135,7 @@ export const QrCode=()=>{
         /> */}
         {/* <h3>Scaned by webCam code {scanResultWebCam}</h3> */}
       </div>
-      {/* <Scanner type='QR' onResult={(res) => setDecodedValue(res)} /> */}
+      <Scanner type='QR' onResult={(res) => setDecodedValue(res)} />
       </div>
     );
 }
