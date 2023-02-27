@@ -40,6 +40,7 @@ export const QrCode=()=>{
         setfile(file);
         const result = await QrScanner.scanImage(file);
         if(result.length){
+            console.log(result,'resulttttttttttttttt')
             const b = result.split(" ")[0]
             if(file){
                
@@ -134,7 +135,7 @@ export const QrCode=()=>{
         /> */}
         {/* <h3>Scaned by webCam code {scanResultWebCam}</h3> */}
       </div>
-      <Scanner type='QR' onResult={(res) => setDecodedValue(res)} />
+      {/* <Scanner type='QR' onResult={(res) => setDecodedValue(res)} /> */}
       </div>
     );
 }
