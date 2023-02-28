@@ -26,15 +26,19 @@ export const Scanner = (props) => {
   
     const handleClickAdvanced = () => {
       const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-        console.info(decodedResult, decodedText);
-        props.onResult(decodedText);
+        let v= JSON.parse(JSON.stringify(decodedText));
+        const b = JSON.parse(v)
+        console.log('hello')
+        // console.info(JSON.parse(v),'kkkkkkkkkkkkkkllllllllllll',b.line_no,"+++");
+
+        // props.onResult(decodedText);
         // alert(`decoded:__ ${JSON.stringify(decodedText)} ${JSON.stringify(decodedResult)}`);
         ////////////////////////////////////////////////////
-        fileRef.current.click();
+        // fileRef.current.click();
         // const b = JSON.stringify(decodedResult);
-        let b = JSON.stringify(decodedResult).split(" ")[0];
+        // let b = JSON.stringify(decodedResult);
         // alert(b);
-     
+        console.log(b,'on Camera')
         const jag = ['1','2','3'];
         const amit = ['4','5','6'];
         const sunin_pal = ['7','8'];
@@ -56,7 +60,7 @@ export const Scanner = (props) => {
               // const b = decodedText
               
               console.log(b.machine_type,'bbbbbbb')
-              alert(b);
+              // alert(b);
               // if(file){
                  
               //     localStorage.setItem('qr_scannerData',JSON.parse(b))
@@ -106,7 +110,7 @@ export const Scanner = (props) => {
               else{
                   console.log('i am in else condition000000000000')
               }
-              dispatch(scannerData(JSON.parse(b)));
+              dispatch(scannerData(b));
               console.log(designation_type,'innn qrcode page')
               if(designation_type==="Machanic"){
                   // navigate('/machanic')
@@ -115,8 +119,8 @@ export const Scanner = (props) => {
                   navigate('/supervisor')
               }  
           // }
+          handleStop();
         };
-        handleStop();
       html5QrCode
         .start(
           { facingMode: "environment" },

@@ -110,7 +110,11 @@ export const QrCode=()=>{
     const handleSecondBtn =()=>{
         const obj = {"line_no":"1","machine_no":"1","machine_type":"priting","operation":"repair"}
   let b = JSON.stringify(obj).split(" ")[0];
-        console.log(obj)
+  const index = b.indexOf(5);
+if (index > -1) { // only splice array when item is found
+  array.splice(index, 1); // 2nd parameter means remove one item only
+}
+        console.log(obj,'----------------')
     }
 
     // const handleScanWebCam =(result)=>{
