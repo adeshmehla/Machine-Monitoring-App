@@ -32,6 +32,7 @@ export const Scanner = (props) => {
         ////////////////////////////////////////////////////
         fileRef.current.click();
         // const b = JSON.stringify(decodedResult);
+        let b = JSON.stringify(decodedResult).split(" ")[0];
         // alert(b);
      
         const jag = ['1','2','3'];
@@ -52,7 +53,7 @@ export const Scanner = (props) => {
             // setfile(file);
   // let decodedText = {"line_no":"4","machine_no":"1","machine_type":"priting","operation":"repair"}
           //   if(decodedText){
-              const b = decodedText
+              // const b = decodedText
               
               console.log(b.machine_type,'bbbbbbb')
               alert(b);

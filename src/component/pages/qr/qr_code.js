@@ -106,6 +106,13 @@ export const QrCode=()=>{
     const handleErrorWebCam =(error)=>{
         console.log(error,'in handle web cam')
     }
+    
+    const handleSecondBtn =()=>{
+        const obj = {"line_no":"1","machine_no":"1","machine_type":"priting","operation":"repair"}
+  let b = JSON.stringify(obj).split(" ")[0];
+        console.log(obj)
+    }
+
     // const handleScanWebCam =(result)=>{
     //     if(result){
     //         setScanResultWebCam(result)
@@ -121,6 +128,7 @@ export const QrCode=()=>{
       <h1 >Scan your qr code</h1>
 
 <Button type='primary' className={styles.qr_btn} onClick={openScaner}>Scan Qr Code</Button>
+<Button type='primary' className={styles.qr_btn} onClick={handleSecondBtn}>Alert</Button>
       <input 
       type="file"
       ref={fileRef} 
