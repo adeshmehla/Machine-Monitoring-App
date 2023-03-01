@@ -1,7 +1,7 @@
 export const NotificationConfirmation=()=>{
     return(
         <>
-        <h1>Hello Message Sent Succeffully</h1>
+        <h1>Message Sent Succeffully</h1>
         </>
     )
 }
