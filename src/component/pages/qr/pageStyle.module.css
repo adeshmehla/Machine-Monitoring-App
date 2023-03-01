@@ -11,10 +11,10 @@
     opacity: 0.8;
 }
 .qr_btn{
-    margin: 4%;
+    margin: 2%;
     background-color: rgb(49, 216, 77);
-    width: 50%;
+    width: 45%;
     color: black;
-    height: 35px;
+    height: 45px;
     border-radius: 6px;
 }

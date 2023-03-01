@@ -1,7 +1,9 @@
 import React, {useEffect,useRef,useState} from "react";
+import { Button } from 'antd';
 import  {Html5Qrcode} from "html5-qrcode";
 import { useNavigate } from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
+import styles from './pageStyle.module.css'
 import {scannerData,mechanic_name} from '../../redux/pageSlice'
 export const Scanner = (props) => {
   const [file, setfile] = useState(null);
@@ -216,10 +218,13 @@ export const Scanner = (props) => {
             <option>Dummy</option>
           </select>
         )} */}
-        <button onClick={() => handleClickAdvanced()}>
+         <div style={{backgroundColor:"whitesmoke"}}>
+      <h1 >Scan your qr code</h1>
+        <Button type='primary' className={styles.qr_btn} onClick={() => handleClickAdvanced()}>
           click pro {props.type}
-        </button>
-        <button onClick={() => handleStop()}>stop pro</button>
+        </Button>
+        <Button type='primary' className={styles.qr_btn} onClick={() => handleStop()}>stop pro</Button>
+        </div>
         <br />
         <br />
         {/* <button onClick={scanLocalFile}>Scan local file</button> */}
