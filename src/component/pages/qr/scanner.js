@@ -3,8 +3,8 @@ import { Button } from 'antd';
 import  {Html5Qrcode} from "html5-qrcode";
 import { useNavigate } from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
-import styles from './pageStyle.module.css'
 import {scannerData,mechanic_name} from '../../redux/pageSlice'
+import styles from './pageStyle.module.css'
 export const Scanner = (props) => {
     const dispatch = useDispatch();
     const designation_type = useSelector(state=>state.pageReducer.degination_type)

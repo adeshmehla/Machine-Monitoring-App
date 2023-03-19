@@ -1,33 +1,37 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from 'axios';
 import { Button, Form, Input, Radio } from "antd";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import styles from "./feature.module.css";
 export const Signup = () => {
-  // const [error, setError] = useState("");
-
-  // const layout = {
-  //   labelCol: {
-  //     span: 8
-  //   },
-  //   wrapperCol: {
-  //     span: 16
-  //   }
-  // };
-
-  // const validateMessages = {
-  //   required: "${label} is required!",
-  //   types: {
-  //     email: "${label} is not a valid email!",
-  //     number: "${label} is not a valid number!"
-  //   },
-  //   number: {
-  //     range: "${label} must be between ${min} and ${max}"
-  //   }
-  // };
+  const navigate = useNavigate();
+  const initialValue = {
+    // name:"",
+    card_number:"",
+    password:""
+  }
+  const [signup,setSignup]=useState(initialValue)
 
   const onFinish = async (value) => {
-    console.log(value, "Signuppppppp");
+    console.log(value)
+    const{employee_name,card_number,password}=value;
+    if(!employee_name || !card_number || !password){
+      alert("error66")
+    }else{
+
+      axios.post('http://localhost:5000/api/signup',{
+        employee_name,
+        card_number,
+        password,
+      }).then(()=>{
+        setSignup({employee_name:"",card_number:"",password:""})
+       console.log()
+      }).catch((err)=>alert(err,'error'));
+      setTimeout(()=>{
+        navigate('/qrcode');
+      },500)
+    }
   };
 
   return (
@@ -45,36 +49,36 @@ export const Signup = () => {
         }}
         // validateMessages={validateMessages}
       >
-        <Form.Item name={["user", "designation"]} label="Your Designation">
+        {/* <Form.Item name={["user", "designation"]} label="Your Designation">
           <Radio.Group>
             <Radio.Button value="Supervisor">Supervisor</Radio.Button>
             <Radio.Button value="Machanic">Machanic</Radio.Button>
           </Radio.Group>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
-          name={["user", "name"]}
-          label="Name"
+          name="employee_name"
+          label="Employee Name"
           rules={[
             {
-              type: "name"
+              type: "Employee Name is required"
             }
           ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          name={["user", "email_address"]}
-          label="Email"
-          rules={[
-            {
-              type: "email"
-            }
-          ]}
+          name="card_number"
+          label="Card Number"
+          // rules={[
+          //   {
+          //     type: "number"
+          //   }
+          // ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          name={["user", "password"]}
+          name="password"
           label="Password"
           rules={[
             {
@@ -99,7 +103,7 @@ export const Signup = () => {
         </Form.Item>
         <p className={styles.feature_footer_link}>
           <span>Already have an account?</span>
-          <Link className={styles.link_class} to="/login">
+          <Link className={styles.link_class} to="/">
             Login
           </Link>
         </p>

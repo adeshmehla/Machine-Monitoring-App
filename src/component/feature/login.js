@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Input, Radio, Modal } from "antd";
+import axios from 'axios'
+import { Button, Form, Space,Input, Tooltip,Typography, Modal } from "antd";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import login_img from '../img/images.jpg'
 import styles from "./feature.module.css";
@@ -7,11 +8,19 @@ import { ForgotPassword } from "./forgot_password";
 import {degination} from '../redux/pageSlice'
 import {useDispatch} from 'react-redux';
 export const Login = () => {
+  const [data,setData]=useState(null);
+  const [employeeName,setEmployeeName]=useState('')
+  const loadData = async()=>{
+    axios.get('http://localhost:5000/api/login').then(res=>setData(res.data)).then(err=>console.log(err,'error'))
+  }
+  useEffect(()=>{
+    loadData();
+  },[])
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate('');
-  // const [employee_name, setEmployee_name] = useState("");
+  const [employee_name, setEmployee_name] = useState("");
 
   useEffect(() => {
     form.setFieldsValue({
@@ -30,34 +39,40 @@ export const Login = () => {
     setIsModalOpen(false);
   };
 
-  // const layout = {
-  //   labelCol: {
-  //     span: 8
-  //   },
-  //   wrapperCol: {
-  //     span: 16
-  //   }
-  // };
-
-  // const validateMessages = {
-  //   required: "${label} is required!",
-  //   types: {
-  //     email: "${label} is not a valid email!",
-  //     number: "${label} is not a valid number!"
-  //   },
-  //   number: {
-  //     range: "${label} must be between ${min} and ${max}"
-  //   }
-  // };
 
   const onFinish = (values) => {
     console.log(values, "login Data++++++++++++");
     if(values){
-      localStorage.setItem('loginData',values)
-dispatch(degination(values.user.designation))
-      navigate('/qrcode')
+     let loginAuth =  data.filter((i)=>i.card_number===values.user.card_number && i.password===values.user.password)
+      console.log(loginAuth,'----------------')
+     if(loginAuth.length){
+       navigate('/qrcode')
+     }else{
+      alert('Login failed wrong user credentials')
+     }
     }
   };
+  const handleGetEmployeeName=(e)=>{
+console.log(e.target.value,'--------------')
+ let b =  data.filter((i)=>i.card_number===e.target.value);
+ setEmployeeName(b[0].employee_name)
+console.log(b[0].employee_name,'---------------------+++++++++++++-',employeeName) 
+}
+// const card_details=[
+//   {card_number:"3546556",employee_name:"ramesh"},
+//   {card_number:"9898",employee_name:"mohan"},
+//   {card_number:"5678768",employee_name:"vikash"},
+// ]
+
+// const handleCardNumberChange=(e)=>{
+// console.log(e.target.value,'cardname')
+// const d = card_details.find(i=>i.card_number==e.target.value)
+// console.log(d,'onmatch')
+// if(d){
+//   console.log('in if condition')
+//   setEmployeeName(d.employee_name);
+// }
+// }
 
   return (
     <>
@@ -65,11 +80,12 @@ dispatch(degination(values.user.designation))
       <div className={styles.container}>
 
         
-        <h2>Login</h2>
+        <h2>Login </h2>
         <Form
           form={form}
           className={styles.form_container}
           layout="vertical"
+          initialValues={{ employee_name:'default value' }}
           name="nest-messages"
           onFinish={onFinish}
           style={{
@@ -77,18 +93,23 @@ dispatch(degination(values.user.designation))
           }}
           // validateMessages={validateMessages}
           >
-          <Form.Item name={["user", "designation"]} label="Your Designation">
+          {/* <Form.Item name={["user", "designation"]} label="Your Designation">
             <Radio.Group>
               <Radio.Button value="Supervisor">Supervisor</Radio.Button>
               <Radio.Button value="Machanic">Mechanic</Radio.Button>
             </Radio.Group>
-          </Form.Item>
+          </Form.Item> */}
+          {/* <Space> */}
           <Form.Item name={["user", "card_number"]} label="Card Number">
-            <Input />
+            <Input type="number" onBlur={handleGetEmployeeName}/>
           </Form.Item>
-          <Form.Item name={["user", "employee_name"]} label="Employee Name">
+          <Tooltip title="Employee Name">
+          <Typography>{employeeName}</Typography>
+        </Tooltip>
+      {/* </Space> */}
+          {/* <Form.Item name={["user", "employee_name"]} label="Employee Name">
             <Input />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name={["user", "password"]}
             label="Your Password"
@@ -115,7 +136,7 @@ dispatch(degination(values.user.designation))
             </Button>
           </Form.Item>
         </Form>
-        <p className={styles.feature_footer_link}>
+        {/* <p className={styles.feature_footer_link}>
           <Link
             className={styles.link_class}
             onClick={showModal}
@@ -126,7 +147,7 @@ dispatch(degination(values.user.designation))
           <Link className={styles.link_class} to="/signup">
             Signup
           </Link>
-        </p>
+        </p> */}
 
         <Modal
           width={320}
