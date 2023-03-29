@@ -3,7 +3,11 @@ const app = express();
 const bodyParser = require("body-parser");
 const mysql = require("mysql2")
 const cors = require("cors");
+const jwt = require('jsonwebtoken');
+const jwtKey = 'e-com';
+flash = require('express-flash')
 app.cors = require("cors");
+var router = express.Router();
 
 const db = mysql.createPool({
   host:"localhost",
@@ -11,7 +15,6 @@ const db = mysql.createPool({
   password:"Mysql@000",
   database:"user_auth"
 })
-
 
 app.use(cors());
 app.use(express.json());
@@ -24,16 +27,61 @@ app.get("/api/login",(req,res)=>{
     // console.log(res,'result',result)
   });
 });
-app.post("/api/signup",(req,res)=>{
-  const {employee_name,card_number,password} = req.body;
-  console.log(req,'payload')
-    const sqlInsert = 
-  "INSERT INTO auth_db (card_number,password) VALUES (?,?)";
-  db.query(sqlInsert,[employee_name,card_number,password],(error,result)=>{
-    if(error){
-      console.log(error,'error')
-    }
+app.get("/api/mechanic_table",(req,res)=>{
+  const sqlGet = "SELECT * FROM mechanic_db";
+  db.query(sqlGet,(error,result)=>{
+    res.send(result);
+    console.log(res,'result',result)
   });
+});
+app.get("/api/supervisor_table",(req,res)=>{
+  const sqlGet = "SELECT * FROM supervisor_db";
+  db.query(sqlGet,(error,result)=>{
+    res.send(result);
+    console.log(res,'result',result)
+  });
+});
+// router.post("/api/signup",(req,res)=>{
+//   const {employee_name,card_number,password} = req.body;
+//   console.log(req,'payload')
+//     const sqlInsert = 
+//   "INSERT INTO auth_db (card_number,password) VALUES (?,?)";
+//   db.query(sqlInsert,[employee_name,card_number,password],(error,result)=>{
+//     if(error){
+//       console.log(error,'error')
+//     }
+//   });
+// });
+
+
+app.post("/api/mechanic",(req,res)=>{
+  const {line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,repair_start_time} = req.body;
+  console.log(req,'payload')
+    const sql = 
+    `INSERT INTO user_auth.mechanic_db (line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,repair_start_time) VALUES ("${line_number}", "${machine_number}", "${machine_type}", "${operation}","${breakdown_reason}","${action_taken}","${part_replaced}", "${number_of_spare_parts}","${repair_start_time}")`
+   console.log(sql,'ppppppp')
+    db.query(sql, function (err, result) {
+      
+      if (err) throw err
+      console.log('Row has been updated')
+      flash('success', 'Data stored!')
+      res.redirect('/')
+    })
+});
+/////////////////////////////////////////////////////////////////////////////////////
+app.post("/api/supervisor",(req,res)=>{
+  const {line_number,machine_number,mechanic_name,breakdown_start_time} = req.body;
+  console.log(req,'payload')
+    const sql = 
+    `INSERT INTO user_auth.supervisor_db (line_number,machine_number,mechanic_name,breakdown_start_time) VALUES ("${line_number}", "${machine_number}", "${mechanic_name}","${breakdown_start_time}")`
+   console.log(sql,'supervisor')
+    db.query(sql, function (err, result) {
+      
+      if (err) throw err
+      console.log('Row has been updated',result)
+      flash('success', 'Data stored!')
+      res.redirect('/')
+    })
 });
 
 app.get("/", (req, res) => {
