@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Form, Input,Modal,Select,Space, TimePicker } from "antd";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
 import dayjs from 'dayjs';
@@ -7,22 +8,22 @@ import {useSelector} from 'react-redux';
 import { NotificationConfirmation } from "../notificationConfirmation";
 export const MechanicForm = () => {
   const [open, setIsOpen] = useState(false);
+  const[breakdownTimeStart,setBreakdownTimeStart]=useState(null);
   // const option = {Select}
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [startTime,setStartTime] =useState(null);
+  const[mechanicData,setMechanicData]=useState([]);
   const[machine_repaired,setMachineRepaired]=useState(false)
+  const [post,setPost]=useState(null);
   const data = useSelector(state=>state.pageReducer.data);
-  const [selectedTime,setSelectedTime]=useState(dayjs(moment().format('hh:mm:ss')))
-  const date = new Date();
-  useEffect(()=>{
-    setSelectedTime(moment().format('hh:mm:ss'))
-  },[date])
   
-  const time =new Date()
-  var hour = time.getHours();
-  var minute = time.getMinutes();
-  var second = time.getSeconds();
+  
+  
+  // const time =new Date()
+  // var hour = time.getHours();
+  // var minute = time.getMinutes();
+  // var second = time.getSeconds();
   const layout = {
     labelCol: {
       span: 8
@@ -42,18 +43,11 @@ export const MechanicForm = () => {
       range: "${label} must be between ${min} and ${max}"
     }
   };
-  useEffect(()=>{
-    console.log(data,'inn home component++++++');
-    console.log(data,'data in machanic page')
-    dayjs(moment().format('hh:mm:ss'), 'HH:mm:ss')
-    
-    setStartTime(`${hour}/${minute}/${second}`)
-    console.log(startTime,'+++++++');
-  },[])
+ 
 
   const { Option } = Select;
 const handleChange = (value) => {
-  console.log(`selected ${value}`);
+  // console.log(`selected ${value}`);
 };
 
   const handleOk = () => {
@@ -70,17 +64,22 @@ const isChecked = (e)=>{
 }
 
   const onFinish = (values) => {
-   if(machine_repaired){
-console.log(values,"+++++++++++++++ machine repaired")
-   }else{
-    alert('Please repair the machine and click on the machine is repaired checkbox for confirmation')
-   }
-    // let oldData = JSON.parse(localStorage.getItem("userData"));
-    // localStorage.setItem("userData", JSON.stringify([...oldData, values.user]));
-    // console.log(values, "-----------");
+
     if (values) {
+        values.repair_start_time = moment().format('YYYY-MM-DD hh:mm:ss')
+      
+      const {line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,repair_start_time} = values;
       setIsOpen(true);
-      navigate("/notification_confirmation")
+      axios
+      .post('http://localhost:5000/api/mechanic', {
+        line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,repair_start_time,
+      })
+      .then((response) => {
+        setPost(response.data);
+      }).catch((err)=>alert(err,'error'));
+      setTimeout(()=>{
+        navigate("/notification_confirmation")
+      },500)
     }
   };
   return (
@@ -101,13 +100,13 @@ console.log(values,"+++++++++++++++ machine repaired")
         >
            <Form.Item
             label="Line Number"
-            name="line_no"
+            name="line_number"
             rules={[{ required: true, message: "Please input your name!" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name="machine_no"
+            name="machine_number"
             label="Machine Number"
             rules={[
               {
@@ -129,17 +128,7 @@ console.log(values,"+++++++++++++++ machine repaired")
             <Input  
             />
           </Form.Item>
-          <Form.Item
-            name={ "start_time"}
-            label="Start Time"
-            rules={[
-              {
-                required: true
-              }
-            ]}
-          >
-            <Input defaultValue = {`${hour}/${minute}/${second}`} type="time" />
-          </Form.Item>
+       
                 <Form.Item
                   name={ "operation"}
                   label="Operation"
@@ -152,17 +141,7 @@ console.log(values,"+++++++++++++++ machine repaired")
                   <Input 
                   />
                 </Form.Item>
-                {/* <Form.Item
-            name={ "breakdown_time"}
-            label="Repair Time"
-            rules={[
-              {
-                required: true
-              }
-            ]}
-          >
-            <TimePicker defaultValue={dayjs(moment().format('hh:mm:ss'), 'HH:mm:ss')} size="large" />
-          </Form.Item> */}
+             
           <Form.Item
                   name={"breakdown_reason"}
                   label="Breakdown Reason"
@@ -367,7 +346,7 @@ label="KJ26_Upper_looper_holder_siruba_O/L">
   </Select>
                 </Form.Item>
           <Form.Item
-                  name={["user", "no_of_spare_parts"]}
+                  name={"number_of_spare_parts"}
                   label="No Of Spare Parts"
                   rules={[
                     {

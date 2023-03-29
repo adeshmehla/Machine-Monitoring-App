@@ -1,0 +1,27 @@
+.mainHeading{
+    height: 65px;
+    background-color: rgb(49, 216, 77);
+    text-align: center;
+    width: 35%;
+    padding: 17px 0;
+    margin: auto;
+    margin-top: 1%;
+
+}
+.mainHeading h2{
+    text-align: center;
+}
+.container{
+    width: 28%;
+    margin: auto;
+}
+.box{
+    width: 500px;
+    height: 80px;
+    text-align: center;
+    list-style: none;
+    font-size: 18px;
+    padding: 30px 0px;
+    background-color: rgb(49, 216, 77);
+    margin-bottom: 4%;
+}
