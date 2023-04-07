@@ -4,7 +4,7 @@ const initialState={
   degination_type: '',
   mechanic_name: '',
   isAuth:false,
-  breakdownTime:0,
+  // breakdownTime:0,
   data:[]
 }
 
@@ -24,9 +24,12 @@ scannerData:(state,action)=>{
     isAuth:(state,payload)=>{
       state.isAuth=payload.action;
       },
-    breakdownTime:(state,action)=>{
-      state.breakdownTime=action.payload;
-      },
+      // breakdownStartTime:(state,action)=>{
+      // state.breakdownTime=action.payload;
+      // },
+      // repairStartTime:(state,action)=>{
+      // state.breakdownTime=action.payload;
+      // },
   },
 })
 

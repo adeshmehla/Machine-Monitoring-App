@@ -2,7 +2,9 @@ import { useState,useEffect } from 'react';
 import { Table,Space,Button } from 'antd';
 import axios from 'axios';
 import { Scanner } from './qr/scanner';
-
+import { isAuth } from "../redux/pageSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 // const data = [
 //   {
 //     key: '1',
@@ -42,7 +44,8 @@ const onChange = (pagination, filters, sorter, extra) => {
 export const MechanicDataTable  = () =>{
   const[data,setData]=useState(null)
   const [scanStart, setScanStart] = useState(false);
- 
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
   const columns = [
     {
       title: 'Line Number',
@@ -67,6 +70,9 @@ export const MechanicDataTable  = () =>{
     {
       title: 'Breakdown Time',
       dataIndex: 'breakdown_time',
+    //   render: (text, record, index) => {
+    //     return fromCurrentIndex(index);
+    // },
       sorter: {
         compare: (a, b) => a.breakdown_time - b.breakdown_time,
         multiple: 2,
@@ -95,9 +101,14 @@ export const MechanicDataTable  = () =>{
   useEffect(()=>{
     loadData();
   },[])
-
+  const handleLogout = ()=>{
+    dispatch(isAuth(false))
+     navigate('/')
+     localStorage.clear()
+   }
   return(
   <>
+  <Button style={{backgroundColor:"rgb(49, 216, 77)",margin:"2%"}} onClick={handleLogout}>Logout</Button>
 <Table style={{margin:"auto",width:"80%"}} columns={columns} dataSource={data} onChange={onChange} />;
 {scanStart && <Scanner />}
 </> 

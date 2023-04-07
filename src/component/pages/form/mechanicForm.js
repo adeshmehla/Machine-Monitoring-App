@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, {useState,useEffect } from "react";
 import { Button, Checkbox, Form, Input,Modal,Select,Space, TimePicker } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
-import dayjs from 'dayjs';
 import {useSelector} from 'react-redux';
-import { NotificationConfirmation } from "../notificationConfirmation";
 export const MechanicForm = () => {
   const [open, setIsOpen] = useState(false);
-  const[breakdownTimeStart,setBreakdownTimeStart]=useState(null);
-  // const option = {Select}
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [startTime,setStartTime] =useState(null);
-  const[mechanicData,setMechanicData]=useState([]);
-  const[machine_repaired,setMachineRepaired]=useState(false)
   const [post,setPost]=useState(null);
+  const[isMachineRepaird,setMachineRepaired]=useState(false)
   const data = useSelector(state=>state.pageReducer.data);
-  
-  
-  
-  // const time =new Date()
-  // var hour = time.getHours();
-  // var minute = time.getMinutes();
-  // var second = time.getSeconds();
+  const[supervisorData,setsupervisorData]=useState(null)
+
+
+useEffect(()=>{
+  axios.get('http://localhost:5000/api/supervisor_table')
+    .then(res=>setsupervisorData(res.data))
+    // new Date(supervisorData[1].breakdown_start_time); 
+},[])
+
   const layout = {
     labelCol: {
       span: 8
@@ -52,6 +48,7 @@ const handleChange = (value) => {
 
   const handleOk = () => {
     setIsOpen(false);
+    navigate('/mechanicdatatable')
   };
 
   const handleCancel = () => {
@@ -64,22 +61,23 @@ const isChecked = (e)=>{
 }
 
   const onFinish = (values) => {
-
+  
     if (values) {
-        values.repair_start_time = moment().format('YYYY-MM-DD hh:mm:ss')
-      
-      const {line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,repair_start_time} = values;
+    
+      if(values.breakdown_end_time==undefined){
+        values.breakdown_end_time = moment().format('YYYY-MM-DD hh:mm:ss')
+      }
+      console.log(values,'onSubmit')
+      const {line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,breakdown_end_time} = values;
       setIsOpen(true);
       axios
       .post('http://localhost:5000/api/mechanic', {
-        line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,repair_start_time,
+        line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,breakdown_end_time,
       })
       .then((response) => {
         setPost(response.data);
       }).catch((err)=>alert(err,'error'));
-      setTimeout(()=>{
-        navigate("/notification_confirmation")
-      },500)
+    
     }
   };
   return (
@@ -101,6 +99,7 @@ const isChecked = (e)=>{
            <Form.Item
             label="Line Number"
             name="line_number"
+            // initialValue={supervisorData.line_number}
             rules={[{ required: true, message: "Please input your name!" }]}
           >
             <Input />
@@ -356,6 +355,14 @@ label="KJ26_Upper_looper_holder_siruba_O/L">
                 >
                   <Input />
                 </Form.Item>
+                <Form.Item
+                style={{display:"none"}}
+            name="breakdown_end_time"
+            label="Repair Start Time"
+           
+          >
+         <TimePicker size="large" disabled/>
+          </Form.Item>   
           <Form.Item
             wrapperCol={{
               ...layout.wrapperCol,
@@ -379,10 +386,10 @@ label="KJ26_Upper_looper_holder_siruba_O/L">
             </Button>
           </Form.Item>
         </Form>
-        <Modal open={open} title="Reset Password Using Email"
+        <Modal open={open} title="Send Notification Successfully"
           onOk={handleOk}
           onCancel={handleCancel}>
-        <NotificationConfirmation/>
+        {/* <NotificationConfirmation/> */}
       </Modal>
       </div>:<h1>Coming soon....</h1>}
      

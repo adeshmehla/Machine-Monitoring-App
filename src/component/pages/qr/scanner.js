@@ -196,14 +196,6 @@ export const Scanner = () => {
         setCameraList([]);
       });
   };
-  // const onCameraChange = (e) => {
-  //   if (e.target.selectedIndex) {
-  //     let selectedCamera = e.target.options[e.target.selectedIndex];
-  //     console.info(selectedCamera);
-  //     let cameraId = selectedCamera.dataset.key;
-  //     setActiveCamera(cameraList.find((cam) => cam.id === cameraId));
-  //   }
-  // };
   const handleStop = () => {
     try {
       html5QrCode
@@ -218,30 +210,30 @@ export const Scanner = () => {
       console.log(err);
     }
   };
-  const scanLocalFile = () => {
-    fileRef.current.click();
-  };
-  const scanFile = (e) => {
-    if (e.target.files.length === 0) {
-      // No file selected, ignore
-      return;
-    }
+  // const scanLocalFile = () => {
+  //   fileRef.current.click();
+  // };
+  // const scanFile = (e) => {
+  //   if (e.target.files.length === 0) {
+  //     // No file selected, ignore
+  //     return;
+  //   }
 
     // Use the first item in the list
-    const imageFile = e.target.files[0];
-    console.info(imageFile);
-    html5QrCode
-      .scanFile(imageFile, /* showImage= */ true)
-      .then((qrCodeMessage) => {
-        // success, use qrCodeMessage
-        // console.log(qrCodeMessage,'ppoooooo');
-        html5QrCode.clear();
-      })
-      .catch((err) => {
-        // failure, handle it.
-        console.log(`Error scanning file. Reason: ${err}`);
-      });
-  };
+  //   const imageFile = e.target.files[0];
+  //   console.info(imageFile);
+  //   html5QrCode
+  //     .scanFile(imageFile, /* showImage= */ true)
+  //     .then((qrCodeMessage) => {
+  //       // success, use qrCodeMessage
+  //       // console.log(qrCodeMessage,'ppoooooo');
+  //       html5QrCode.clear();
+  //     })
+  //     .catch((err) => {
+  //       // failure, handle it.
+  //       console.log(`Error scanning file. Reason: ${err}`);
+  //     });
+  // };
 
   return (
     <div style={{ position: "relative" }}>

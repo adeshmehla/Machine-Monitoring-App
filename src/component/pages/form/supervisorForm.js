@@ -4,23 +4,15 @@ import {useSelector} from 'react-redux';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
-import dayjs from 'dayjs';
 import { NotificationConfirmation } from "../notificationConfirmation";
 export const SupervisorForm = () => {
   const [open, setIsOpen] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [mechanicName,setMechnicName]=useState(null)
-  const [selectedTime,setSelectedTime]=useState(dayjs(moment().format('hh:mm:ss')));
   const data = useSelector(state=>state.pageReducer.data);
   const mechanic_name = useSelector(state=>state.pageReducer.mechanic_name);
-  const date = new Date();
-  useEffect(()=>{
-    setSelectedTime(moment().format('hh:mm:ss'))
-    // console.log(moment().format('hh:mm:ss'));
-
-  },[date])
   
+ 
  
   const layout = {
     labelCol: {
@@ -41,17 +33,12 @@ export const SupervisorForm = () => {
       range: "${label} must be between ${min} and ${max}"
     }
   };
-  useEffect(()=>{
-    // console.log(data,'inn superviser component++++++',mechanic_name)
-  },[data])
-
-  const { Option } = Select;
-const handleChange = (value) => {
-  // console.log(`selected ${value}`);
-};
 
   const handleOk = () => {
     setIsOpen(false);
+    setTimeout(()=>{
+      navigate("/supervisorScanner")
+    },500)
   };
 
   const handleCancel = () => {
@@ -59,13 +46,12 @@ const handleChange = (value) => {
   };
 
   const onFinish = (values) => {
-   
     if(values.breakdown_start_time==undefined){
       values.breakdown_start_time = moment().format('YYYY-MM-DD hh:mm:ss')
     }
       // console.log(values, "-----------");
     if (values) {
-      if (values) {
+        localStorage.setItem('breakdown_start_time',moment().format('hh:mm:ss'))
         const {line_number,machine_number,mechanic_name,breakdown_start_time} = values;
         setIsOpen(true);
         axios
@@ -75,13 +61,13 @@ const handleChange = (value) => {
         .then((response) => {
           // setPost(response.data);
         }).catch((err)=>alert(err,'error'));
-        setTimeout(()=>{
-          navigate("/notification_confirmation")
-        },500)
-      }
+       
+      
     }
   };
-
+  const onTimeChange=(time) => {
+    console.log(time);
+  }
   return (
     <div className={styles.section}>
        {data ? <div className={styles.container}>
@@ -136,11 +122,12 @@ const handleChange = (value) => {
             <Input defaultValue={mechanic_name} />
           </Form.Item>
                 <Form.Item
+                style={{display:"none"}}
             name="breakdown_start_time"
             label="Breakdown Start Time"
            
           >
-            <TimePicker defaultValue={dayjs(moment().format('hh:mm:ss'), 'HH:mm:ss')} size="large" />
+         <TimePicker  size="large" disabled/>
           </Form.Item>
           
           <Form.Item
