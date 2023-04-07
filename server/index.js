@@ -8,7 +8,8 @@ const jwtKey = 'e-com';
 flash = require('express-flash')
 app.cors = require("cors");
 var router = express.Router();
-
+// let startTime;
+let endTime;
 const db = mysql.createPool({
   host:"localhost",
   user:"root",
@@ -24,7 +25,7 @@ app.get("/api/login",(req,res)=>{
   const sqlGet = "SELECT * FROM auth_db";
   db.query(sqlGet,(error,result)=>{
     res.send(result);
-    // console.log(res,'result',result)
+    console.log(res,'result',result)
   });
 });
 app.get("/api/mechanic_table",(req,res)=>{
@@ -55,11 +56,12 @@ app.get("/api/supervisor_table",(req,res)=>{
 
 
 app.post("/api/mechanic",(req,res)=>{
-  const {line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,repair_start_time} = req.body;
-  console.log(req,'payload')
+  const {line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,breakdown_end_time} = req.body;
+
+
     const sql = 
-    `INSERT INTO user_auth.mechanic_db (line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,repair_start_time) VALUES ("${line_number}", "${machine_number}", "${machine_type}", "${operation}","${breakdown_reason}","${action_taken}","${part_replaced}", "${number_of_spare_parts}","${repair_start_time}")`
-   console.log(sql,'ppppppp')
+    `INSERT INTO user_auth.mechanic_db (line_number,machine_number,machine_type,operation,breakdown_reason,action_taken,part_replaced,number_of_spare_parts,breakdown_end_time) VALUES ("${line_number}", "${machine_number}", "${machine_type}", "${operation}","${breakdown_reason}","${action_taken}","${part_replaced}", "${number_of_spare_parts}","${breakdown_end_time}")`
+  //  console.log(sql,'ppppppp')
     db.query(sql, function (err, result) {
       
       if (err) throw err
@@ -71,10 +73,11 @@ app.post("/api/mechanic",(req,res)=>{
 /////////////////////////////////////////////////////////////////////////////////////
 app.post("/api/supervisor",(req,res)=>{
   const {line_number,machine_number,mechanic_name,breakdown_start_time} = req.body;
-  console.log(req,'payload')
+  startTime = breakdown_start_time
+  // console.log(req,'payload')
     const sql = 
     `INSERT INTO user_auth.supervisor_db (line_number,machine_number,mechanic_name,breakdown_start_time) VALUES ("${line_number}", "${machine_number}", "${mechanic_name}","${breakdown_start_time}")`
-   console.log(sql,'supervisor')
+  //  console.log(sql,'supervisor')
     db.query(sql, function (err, result) {
       
       if (err) throw err
@@ -83,6 +86,25 @@ app.post("/api/supervisor",(req,res)=>{
       res.redirect('/')
     })
 });
+
+///////////////////////////////////////////////////////////
+app.put('/api/mechanic', (req, res) => {
+  const id = req.body.id
+  const breakdown_time = req.body.breakdown_time
+  console.log(value)
+  db.query(
+   `UPDATE user_auth.mechanic_db SET breakdown_time = ${breakdown_time} WHERE id = ${id} `,
+   [id,breakdown_time],
+ (err, result) => {
+   if (err) {
+     console.log(err)
+   } else {
+     res.send(result)
+    // console.log(result,'-------')
+   }
+ }
+ )})
+
 
 app.get("/", (req, res) => {
   // const sqlInsert = 
