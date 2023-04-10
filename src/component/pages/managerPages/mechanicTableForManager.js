@@ -5,7 +5,7 @@ import axios from 'axios';
 import Highlighter from 'react-highlight-words';
 import { downloadExcel } from "react-export-table-to-excel";
 import { Link, Route, useNavigate,Routes } from 'react-router-dom';
-import Navbar from '../navbar';
+import Navbar from './navbar';
 
 const onChange = (pagination, filters, sorter, extra) => {
   // console.log('params', pagination, filters, sorter, extra);
@@ -168,9 +168,9 @@ const navigate = useNavigate("")
     {
       title: 'Breakdown Time',
       dataIndex: 'breakdown_time',
-      render:((value)=>{
+      render:(value)=>{
         return Math.trunc(value)
-      }),
+      },
       ...getColumnSearchProps('breakdown_end_time'),
     },
     {

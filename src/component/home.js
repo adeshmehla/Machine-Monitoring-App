@@ -5,13 +5,13 @@ import { Signup } from './feature/signup';
 import { MechanicForm } from './pages/form/mechanicForm';
 import { SupervisorForm } from './pages/form/supervisorForm';
 import { ManagerHomePage } from './pages/managerPages/Managerhome';
-import { MechanicTableForManager } from './pages/managerPages/inventory/mechanicTableForManager';
+import { MechanicTableForManager } from './pages/managerPages/mechanicTableForManager';
 import { ViewInventory } from './pages/managerPages/inventory/viewInventory';
 import { MechanicDataTable } from './pages/MechanicDataTable';
 import { NotificationConfirmation } from './pages/notificationConfirmation';
 import { QrCode } from './pages/qr/qr_code';
 import { SupervisorScanner } from './pages/qr/supervisorScanner';
-import {MyChart } from './pages/managerPages/analysis';
+import {MyChart } from './pages/managerPages/inventory/analysis';
 import Navbar from '../component/pages/managerPages/navbar';
 export const Home = () => {
   let manager = localStorage.getItem('isManager')

@@ -52,7 +52,7 @@ export const Signup = () => {
         {/* <Form.Item name={["user", "designation"]} label="Your Designation">
           <Radio.Group>
             <Radio.Button value="Supervisor">Supervisor</Radio.Button>
-            <Radio.Button value="Machanic">Machanic</Radio.Button>
+            <Radio.Button value="mechanic">mechanic</Radio.Button>
           </Radio.Group>
         </Form.Item> */}
         <Form.Item

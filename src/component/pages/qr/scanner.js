@@ -28,7 +28,7 @@
 //     //     const b = JSON.parse(v)
 //     //           dispatch(scannerData(b));
 //     //           console.log(designation_type,'innn qrcode page')
-//     //           if(designation_type==="Machanic"){
+//     //           if(designation_type==="mechanic"){
 //     //               navigate("/mechanic", { replace: true });
 //     //           }else{
 //     //               navigate('/mechanic')
